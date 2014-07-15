@@ -89,7 +89,22 @@ var example = example || {};
                    }
                }
         }); 
-
+        this.midiConnection = flock.midi.connection({
+            openImmediately: true,
+            ports: 0,
+            listeners: {
+                control: function (msg) {
+                  switch(msg.number){
+                    case 1:
+                      synth.set("Main.source.freq.freq", message.value);
+                      break;
+                    case 2:
+                      synth.set("Main.source.freq.mul", message.value * 1000);
+                      break;
+                  }
+                }
+            }
+});
     };
 
     example.SocketSynth.prototype.listen = function () {
